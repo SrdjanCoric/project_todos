@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<ul id="lists">
+  {% for lst in lists %}
+    <li>
+      <a>
+        <h2>{{lst['name']}}</h2>
+        <p>{{lst['todos'] | length}}</p>
+      </a>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
+
