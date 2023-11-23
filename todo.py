@@ -1,7 +1,7 @@
-from flask import Flask, session, render_template, url_for, redirect, request
+from flask import Flask, session, render_template, url_for, redirect, request, flash
 app = Flask(__name__)
 
-app.secret_key='secret1'
+app.secret_key='secret'
 
 
 @app.before_request
@@ -21,6 +21,7 @@ def get_lists():
 def create_list():
     name = request.form["list_name"]
     session['lists'].append({'name': name, 'todos': []})
+    flash("The list has been created.", "success")
     session.modified = True
     return redirect(url_for('get_lists'))
 
@@ -29,4 +30,4 @@ def add_todo():
     return render_template('new_list.html')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5003)
