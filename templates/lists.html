@@ -3,11 +3,17 @@
 {% block content %}
   <ul id="lists">
     {% for lst in lists %}
-      <li>
-        <a href="/lists/{{loop.index0}}">
-          <h2>{{lst['name']}}</h2>
-          <p>{{lst['todos'] | length}}</p>
-        </a>
+      {% if is_list_completed(lst) %}
+        <li class="complete">
+      {% else %}
+        <li>
+      {% endif %}
+          <a href="/lists/{{loop.index0}}">
+            <h2>{{lst['name']}}</h2>
+            <p>
+              {{todos_remaining_count(lst)}} / {{todos_count(lst)}}
+            </p>
+          </a>
       </li>
     {% endfor %}
   </ul>

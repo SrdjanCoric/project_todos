@@ -3,10 +3,21 @@ from flask import (
     url_for, redirect, request, flash
 )
 
-from utils import error_for_list_name, error_for_todo
+from utils import (
+    error_for_list_name, error_for_todo, list_class, is_list_completed,
+    todos_remaining_count, todos_count
+)
 app = Flask(__name__)
 
 app.secret_key='secret'
+
+
+@app.context_processor
+def utility_processor():
+    return dict(is_list_completed=is_list_completed,
+                list_class=list_class, todos_count=todos_count,
+                todos_remaining_count=todos_remaining_count
+            )
 
 @app.before_request
 def before_request():
@@ -18,8 +29,9 @@ def index():
     return redirect(url_for('get_lists'))
 
 @app.route("/lists", methods=["GET"])
-def get_lists():
-    return render_template('lists.html', lists=session['lists'])
+def show_lists():
+    lists = session['lists']
+    return render_template('lists.html', lists=lists)
 
 @app.route("/lists", methods=["POST"])
 def create_list():
@@ -40,8 +52,8 @@ def add_todo():
 
 @app.route("/lists/<int:id>", methods=["GET"])
 def show_list(id):
-    list = session['lists'][id]
-    return render_template('list.html', list=list, list_id=id)
+    lst = session['lists'][id]
+    return render_template('list.html', list=lst, list_id=id)
 
 @app.route("/lists/<int:id>", methods=["POST"])
 def update_list(id):
