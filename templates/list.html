@@ -13,6 +13,9 @@
     {% for todo in list['todos'] %}
       <li>
           <h3>{{todo['name']}}</h3>
+          <form action="/lists/{{list_id}}/todos/{{loop.index0}}/delete" method="post" class="delete">
+            <button type="submit">Delete</button>
+          </form>
       </li>
     {% endfor %}
   </ul>
