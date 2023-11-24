@@ -45,7 +45,7 @@ def create_list():
     session['lists'].append({'name': name, 'todos': []})
     flash("The list has been created.", "success")
     session.modified = True
-    return redirect(url_for('get_lists'))
+    return redirect(url_for('show_lists'))
 
 @app.route("/lists/new")
 def add_todo():
@@ -67,7 +67,7 @@ def update_list(id):
     list['name'] = name
     flash("The list has been updated.", "success")
     session.modified = True
-    return redirect(url_for('get_lists'))
+    return redirect(url_for('show_lists'))
 
 @app.route("/lists/<int:id>/edit")
 def edit_list(id):
@@ -79,7 +79,7 @@ def delete_list(id):
     del session['lists'][id]
     flash("The list has been deleted.", "success")
     session.modified = True
-    return redirect(url_for('get_lists'))
+    return redirect(url_for('show_lists'))
 
 @app.route("/lists/<int:list_id>/todos", methods=["POST"])
 def create_todo(list_id):
