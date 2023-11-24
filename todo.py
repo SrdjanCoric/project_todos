@@ -38,5 +38,10 @@ def create_list():
 def add_todo():
     return render_template('new_list.html')
 
+@app.route("/lists/<int:id>")
+def show_list(id):
+    print(id)
+    return render_template('list.html', list=session['lists'][id])
+
 if __name__ == "__main__":
     app.run(debug=True, port=5003)
