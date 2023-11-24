@@ -38,10 +38,28 @@ def create_list():
 def add_todo():
     return render_template('new_list.html')
 
-@app.route("/lists/<int:id>")
+@app.route("/lists/<int:id>", methods=["GET"])
 def show_list(id):
-    print(id)
-    return render_template('list.html', list=session['lists'][id])
+    list = session['lists'][id]
+    return render_template('list.html', id=id, list=list)
+
+@app.route("/lists/<int:id>", methods=["POST"])
+def update_list(id):
+    name = request.form["list_name"].strip()
+    list = session['lists'][id]
+    error = error_for_list_name(name, session['lists'])
+    if error:
+        flash(error, "error")
+        return render_template('edit_list.html', list=list, id=id)
+    list['name'] = name
+    flash("The list has been updated.", "success")
+    session.modified = True
+    return redirect(url_for('get_lists'))
+
+@app.route("/lists/<int:id>/edit")
+def edit_list(id):
+    list = session['lists'][id]
+    return render_template('edit_list.html', list=list, id=id)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5003)

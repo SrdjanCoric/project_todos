@@ -5,6 +5,9 @@
 <section id="todos">
   <header>
     <h2>{{list['name']}}</h2>
+    <ul>
+      <li><a href="/lists/{{request.view_args.id}}/edit">Edit List</a></li>
+    </ul>
   </header>
 </section>
 {% endblock %}
