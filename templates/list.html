@@ -11,7 +11,12 @@
   </header>
   <ul>
     {% for todo in list['todos'] %}
-      <li>
+
+      <li class="{{'complete' if todo['completed'] else ''}}">
+          <form action="/lists/{{list_id}}/todos/{{loop.index0}}" method="post" class="check">
+            <input type="hidden" name="completed" value="{{not todo['completed']}}" />
+            <button type="submit">Complete</button>
+          </form>
           <h3>{{todo['name']}}</h3>
           <form action="/lists/{{list_id}}/todos/{{loop.index0}}/delete" method="post" class="delete">
             <button type="submit">Delete</button>
@@ -39,5 +44,5 @@
 {% endblock %}
 
 {% block header_links %}
-<a href="/lists">All Lists</a>
+<a class="list" href="/lists">All Lists</a>
 {% endblock %}

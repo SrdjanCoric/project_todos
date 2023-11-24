@@ -91,5 +91,15 @@ def delete_todo(list_id, id):
     session.modified = True
     return redirect(url_for('show_list', id=list_id))
 
+@app.route("/lists/<int:list_id>/todos/<int:id>", methods=["POST"])
+def update_todo_status(list_id, id):
+    list = session['lists'][list_id]
+    is_completed = request.form['completed'] == 'True'
+    list['todos'][id]['completed'] = is_completed
+
+    flash("The todo has been updated.", "success")
+    session.modified = True
+    return redirect(url_for('show_list', id=list_id))
+
 if __name__ == "__main__":
     app.run(debug=True, port=5003)
