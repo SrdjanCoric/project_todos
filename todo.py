@@ -1,8 +1,12 @@
-from flask import Flask, session, render_template, url_for, redirect, request, flash
+from flask import (
+    Flask, session, render_template,
+    url_for, redirect, request, flash
+)
+
+from utils import error_for_list_name
 app = Flask(__name__)
 
 app.secret_key='secret'
-
 
 @app.before_request
 def before_request():
@@ -20,14 +24,15 @@ def get_lists():
 @app.route("/lists", methods=["POST"])
 def create_list():
     name = request.form["list_name"].strip()
-    if 1 <= len(name) <= 100:
-        session['lists'].append({'name': name, 'todos': []})
-        flash("The list has been created.", "success")
-        session.modified = True
-        return redirect(url_for('get_lists'))
-    else:
-        flash("The list name must be between 1 and 100 characters", "error")
+    error = error_for_list_name(name, session['lists'])
+    if error:
+        flash(error, "error")
         return render_template('new_list.html')
+
+    session['lists'].append({'name': name, 'todos': []})
+    flash("The list has been created.", "success")
+    session.modified = True
+    return redirect(url_for('get_lists'))
 
 @app.route("/lists/new")
 def add_todo():
