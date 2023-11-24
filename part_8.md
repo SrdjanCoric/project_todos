@@ -11,3 +11,5 @@ request.form.get('list_name', list['name']) will return the value associated wit
 If list_name isn't in request.form (which would be the case when the form is displayed for the first time), it defaults to list['name'].
 
 Use request object to access `id` <li><a href="/lists/{{request.view_args.id}}/edit">Edit List</a></li>
+
+Add class="edit" to the anchor tag

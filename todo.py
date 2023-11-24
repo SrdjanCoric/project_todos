@@ -61,5 +61,12 @@ def edit_list(id):
     list = session['lists'][id]
     return render_template('edit_list.html', list=list, id=id)
 
+@app.route("/lists/<int:id>/delete", methods=["POST"])
+def delete_list(id):
+    del session['lists'][id]
+    flash("The list has been deleted.", "success")
+    session.modified = True
+    return redirect(url_for('get_lists'))
+
 if __name__ == "__main__":
     app.run(debug=True, port=5003)

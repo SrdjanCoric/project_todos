@@ -2,6 +2,18 @@
 
 {% block content %}
 
+<section id="todos">
+  <header>
+    <h2>Editing '{{list['name']}}'</h2>
+    <ul>
+      <li>
+        <form action="/lists/{{request.view_args.id}}/delete" method="post">
+          <button type="submit" class="delete">Delete List</button>
+        </form>
+    </ul>
+  </header>
+</section>
+
 <form action="/lists/{{request.view_args.id}}" method="post">
   <dl>
     <dt>
