@@ -101,5 +101,15 @@ def update_todo_status(list_id, id):
     session.modified = True
     return redirect(url_for('show_list', id=list_id))
 
+@app.route("/lists/<int:id>/complete_all", methods=["POST"])
+def mark_all_todos_completed(id):
+    list = session['lists'][id]
+    for todo in list['todos']:
+        todo['completed'] = True
+
+    flash("All todos have been updated.", "success")
+    session.modified = True
+    return redirect(url_for('show_list', id=id))
+
 if __name__ == "__main__":
     app.run(debug=True, port=5003)
