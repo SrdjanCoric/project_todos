@@ -3,7 +3,7 @@ from flask import (
     url_for, redirect, request, flash
 )
 
-from utils import error_for_list_name
+from utils import error_for_list_name, error_for_todo
 app = Flask(__name__)
 
 app.secret_key='secret'
@@ -41,7 +41,7 @@ def add_todo():
 @app.route("/lists/<int:id>", methods=["GET"])
 def show_list(id):
     list = session['lists'][id]
-    return render_template('list.html', id=id, list=list)
+    return render_template('list.html', list=list, list_id=id)
 
 @app.route("/lists/<int:id>", methods=["POST"])
 def update_list(id):
@@ -50,7 +50,7 @@ def update_list(id):
     error = error_for_list_name(name, session['lists'])
     if error:
         flash(error, "error")
-        return render_template('edit_list.html', list=list, id=id)
+        return render_template('edit_list.html', list=list)
     list['name'] = name
     flash("The list has been updated.", "success")
     session.modified = True
@@ -59,7 +59,7 @@ def update_list(id):
 @app.route("/lists/<int:id>/edit")
 def edit_list(id):
     list = session['lists'][id]
-    return render_template('edit_list.html', list=list, id=id)
+    return render_template('edit_list.html', list=list)
 
 @app.route("/lists/<int:id>/delete", methods=["POST"])
 def delete_list(id):
@@ -67,6 +67,21 @@ def delete_list(id):
     flash("The list has been deleted.", "success")
     session.modified = True
     return redirect(url_for('get_lists'))
+
+@app.route("/lists/<int:list_id>/todos", methods=["POST"])
+def create_todo(list_id):
+    todo_name = request.form["todo"].strip()
+    list = session['lists'][list_id]
+
+    error = error_for_todo(todo_name)
+    if error:
+        flash(error, "error")
+        return render_template('list.html', list=list, list_id=list_id)
+
+    list['todos'].append({'name': todo_name, 'completed': False})
+    flash("The todo was added.", "success")
+    session.modified = True
+    return redirect(url_for('show_list', id=list_id))
 
 if __name__ == "__main__":
     app.run(debug=True, port=5003)

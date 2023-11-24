@@ -6,10 +6,33 @@
   <header>
     <h2>{{list['name']}}</h2>
     <ul>
-      <li><a class="edit" href="/lists/{{request.view_args.id}}/edit">Edit List</a></li>
+      <li><a class="edit" href="/lists/{{list_id}}/edit">Edit List</a></li>
     </ul>
   </header>
+  <ul>
+    {% for todo in list['todos'] %}
+      <li>
+          <h3>{{todo['name']}}</h3>
+      </li>
+    {% endfor %}
+  </ul>
+
 </section>
+
+<form action="/lists/{{list_id}}/todos" method="post">
+  <dl>
+    <dt>
+      <label for="todo">Enter a new todo item:</label>
+    </dt>
+    <dd>
+      <input name="todo" id="todo" placeholder="Something to do" type="text" value="{{request.form['todo']}}">
+    </dd>
+  </dl>
+  <fieldset class="actions">
+    <input type="submit" value="Add">
+  </fieldset>
+</form>
+
 {% endblock %}
 
 {% block header_links %}
