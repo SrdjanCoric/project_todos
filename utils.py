@@ -25,3 +25,35 @@ def todos_count(lst):
 
 def todos_remaining_count(lst):
     return sum(1 for todo in lst['todos'] if not todo['completed'])
+
+def is_todo_completed(todo):
+    return todo['completed']
+
+def sort_items(items, is_completed):
+    incomplete_items = [(index, item) for index, item in enumerate(items) if not is_completed(item)]
+    complete_items = [(index, item) for index, item in enumerate(items) if is_completed(item)]
+
+    return incomplete_items + complete_items
+    # incomplete_lists = []
+    # complete_lists = []
+
+    # for index, lst in enumerate(lists):
+    #     if is_list_completed(lst):
+    #         complete_lists.append((index, lst))
+    #     else:
+    #         incomplete_lists.append((index, lst))
+
+    # return incomplete_lists + complete_lists
+
+# def sort_lists(lists):
+
+#     incomplete_lists = [(index, lst) for index, lst in enumerate(lists) if not is_list_completed(lst)]
+#     complete_lists = [(index, lst) for index, lst in enumerate(lists) if is_list_completed(lst)]
+
+#     return incomplete_lists + complete_lists
+
+# def sort_todos(todos):
+#     incomplete_todos = [(index, todo) for index, todo in enumerate(todos) if not todo['completed']]
+#     complete_todos = [(index, todo) for index, todo in enumerate(todos) if todo['completed']]
+
+#     return incomplete_todos + complete_todos

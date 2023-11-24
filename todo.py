@@ -5,7 +5,7 @@ from flask import (
 
 from utils import (
     error_for_list_name, error_for_todo, list_class, is_list_completed,
-    todos_remaining_count, todos_count
+    todos_remaining_count, todos_count, sort_items, is_todo_completed
 )
 app = Flask(__name__)
 
@@ -16,7 +16,8 @@ app.secret_key='secret'
 def utility_processor():
     return dict(is_list_completed=is_list_completed,
                 list_class=list_class, todos_count=todos_count,
-                todos_remaining_count=todos_remaining_count
+                todos_remaining_count=todos_remaining_count,
+                sort_items=sort_items, is_todo_completed=is_todo_completed
             )
 
 @app.before_request
